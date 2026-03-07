@@ -9,6 +9,7 @@ import AdminLayout from "@/components/layout/AdminLayout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Members from "./pages/Members";
+import AdminSignup from "./pages/AdminSignup";
 import Registrations from "./pages/Registrations";
 import MemberCard from "./pages/MemberCard";
 import Announcements from "./pages/Announcements";
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<PublicRegistration />} />
+            <Route path="/admin-signup" element={<AdminSignup />} />
 
             {/* Admin routes - protected */}
             <Route element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
