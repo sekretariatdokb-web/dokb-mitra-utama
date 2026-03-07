@@ -1,12 +1,13 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
-import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const { signOut } = useAuth();
 
-  const handleLogout = () => {
-    // TODO: integrate with Supabase auth
+  const handleLogout = async () => {
+    await signOut();
     navigate("/login");
   };
 
