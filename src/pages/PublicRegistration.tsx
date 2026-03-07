@@ -6,18 +6,38 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import dokbLogo from "@/assets/dokb-logo.png";
 
 export default function PublicRegistration() {
+  const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({
+    nama_lengkap: "", nomor_hp: "", kota: "",
+    jenis_kendaraan: "", plat_kendaraan: "", aplikasi: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    const { error } = await supabase.from("registrations").insert(form);
+    setSaving(false);
+    if (error) {
+      toast({ title: "Gagal mendaftar", description: error.message, variant: "destructive" });
+    } else {
+      setSubmitted(true);
+    }
+  };
 
   if (submitted) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="max-w-md w-full text-center animate-fade-in">
           <CardContent className="pt-8 pb-8">
-            <CheckCircle className="h-16 w-16 text-success mx-auto mb-4" />
+            <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-foreground mb-2">Pendaftaran Berhasil!</h2>
             <p className="text-muted-foreground">
               Terima kasih telah mendaftar sebagai anggota DOKB. Tim kami akan meninjau pendaftaran Anda. Silakan tunggu konfirmasi.
@@ -37,18 +57,18 @@ export default function PublicRegistration() {
           <p className="text-sm text-muted-foreground mt-1">Driver Online Kalimantan Selatan Bersatu</p>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <Label>Nama Lengkap</Label>
-              <Input placeholder="Masukkan nama lengkap" required />
+              <Input placeholder="Masukkan nama lengkap" required value={form.nama_lengkap} onChange={(e) => setForm({ ...form, nama_lengkap: e.target.value })} />
             </div>
             <div className="space-y-2">
               <Label>Nomor HP / WhatsApp</Label>
-              <Input placeholder="08xxxxxxxxxx" required />
+              <Input placeholder="08xxxxxxxxxx" required value={form.nomor_hp} onChange={(e) => setForm({ ...form, nomor_hp: e.target.value })} />
             </div>
             <div className="space-y-2">
               <Label>Kota / Kabupaten</Label>
-              <Select required>
+              <Select value={form.kota} onValueChange={(v) => setForm({ ...form, kota: v })} required>
                 <SelectTrigger><SelectValue placeholder="Pilih kota" /></SelectTrigger>
                 <SelectContent>
                   {["Banjarmasin", "Banjarbaru", "Martapura", "Pelaihari", "Rantau", "Kandangan"].map(c =>
@@ -60,16 +80,16 @@ export default function PublicRegistration() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Jenis Kendaraan</Label>
-                <Input placeholder="Toyota Avanza" required />
+                <Input placeholder="Toyota Avanza" required value={form.jenis_kendaraan} onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })} />
               </div>
               <div className="space-y-2">
                 <Label>Plat Kendaraan</Label>
-                <Input placeholder="DA 1234 AB" required />
+                <Input placeholder="DA 1234 AB" required value={form.plat_kendaraan} onChange={(e) => setForm({ ...form, plat_kendaraan: e.target.value })} />
               </div>
             </div>
             <div className="space-y-2">
               <Label>Aplikasi Driver</Label>
-              <Select required>
+              <Select value={form.aplikasi} onValueChange={(v) => setForm({ ...form, aplikasi: v })} required>
                 <SelectTrigger><SelectValue placeholder="Pilih aplikasi" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Gojek">Gojek</SelectItem>
@@ -79,7 +99,9 @@ export default function PublicRegistration() {
                 </SelectContent>
               </Select>
             </div>
-            <Button type="submit" className="w-full h-11">Daftar Sekarang</Button>
+            <Button type="submit" className="w-full h-11" disabled={saving}>
+              {saving ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Memproses...</> : "Daftar Sekarang"}
+            </Button>
           </form>
         </CardContent>
       </Card>
