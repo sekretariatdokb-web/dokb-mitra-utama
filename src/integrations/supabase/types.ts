@@ -14,16 +14,228 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      announcements: {
+        Row: {
+          aktif: boolean
+          created_at: string
+          created_by: string | null
+          id: string
+          isi: string
+          judul: string
+          tanggal: string
+          updated_at: string
+        }
+        Insert: {
+          aktif?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          isi: string
+          judul: string
+          tanggal?: string
+          updated_at?: string
+        }
+        Update: {
+          aktif?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          isi?: string
+          judul?: string
+          tanggal?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      members: {
+        Row: {
+          aplikasi: string | null
+          created_at: string
+          email: string | null
+          id: string
+          jenis_kendaraan: string | null
+          kota: string | null
+          nama_lengkap: string
+          nomor_anggota: string
+          nomor_hp: string | null
+          plat_kendaraan: string | null
+          status: string
+          tahun_kendaraan: number | null
+          tanggal_bergabung: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          aplikasi?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          jenis_kendaraan?: string | null
+          kota?: string | null
+          nama_lengkap: string
+          nomor_anggota: string
+          nomor_hp?: string | null
+          plat_kendaraan?: string | null
+          status?: string
+          tahun_kendaraan?: number | null
+          tanggal_bergabung?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          aplikasi?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          jenis_kendaraan?: string | null
+          kota?: string | null
+          nama_lengkap?: string
+          nomor_anggota?: string
+          nomor_hp?: string | null
+          plat_kendaraan?: string | null
+          status?: string
+          tahun_kendaraan?: number | null
+          tanggal_bergabung?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      registrations: {
+        Row: {
+          aplikasi: string
+          created_at: string
+          id: string
+          jenis_kendaraan: string
+          kota: string
+          nama_lengkap: string
+          nomor_hp: string
+          plat_kendaraan: string
+          reviewed_by: string | null
+          status: string
+        }
+        Insert: {
+          aplikasi: string
+          created_at?: string
+          id?: string
+          jenis_kendaraan: string
+          kota: string
+          nama_lengkap: string
+          nomor_hp: string
+          plat_kendaraan: string
+          reviewed_by?: string | null
+          status?: string
+        }
+        Update: {
+          aplikasi?: string
+          created_at?: string
+          id?: string
+          jenis_kendaraan?: string
+          kota?: string
+          nama_lengkap?: string
+          nomor_hp?: string
+          plat_kendaraan?: string
+          reviewed_by?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          bukti_url: string | null
+          created_at: string
+          deskripsi: string | null
+          id: string
+          judul: string
+          kategori: string
+          status: string
+          submitted_by: string | null
+        }
+        Insert: {
+          bukti_url?: string | null
+          created_at?: string
+          deskripsi?: string | null
+          id?: string
+          judul: string
+          kategori: string
+          status?: string
+          submitted_by?: string | null
+        }
+        Update: {
+          bukti_url?: string | null
+          created_at?: string
+          deskripsi?: string | null
+          id?: string
+          judul?: string
+          kategori?: string
+          status?: string
+          submitted_by?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "super_admin" | "admin_pengurus" | "anggota_driver"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +362,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["super_admin", "admin_pengurus", "anggota_driver"],
+    },
   },
 } as const
