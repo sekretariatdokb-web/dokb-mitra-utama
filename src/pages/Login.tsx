@@ -125,7 +125,12 @@ export default function Login() {
             </Button>
           </form>
 
-          <p className="mt-8 text-center text-xs text-muted-foreground">
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Belum punya akun?{" "}
+            <a href="/admin-signup" className="text-primary font-medium hover:underline">Daftar di sini</a>
+          </p>
+
+          <p className="mt-4 text-center text-xs text-muted-foreground">
             © 2024 Perkumpulan Driver Online Kalimantan Selatan Bersatu
           </p>
         </div>
